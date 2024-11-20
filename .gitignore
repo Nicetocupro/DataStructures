@@ -1,0 +1,22 @@
+# 忽略生成文件和中间文件
+*.o
+*.out
+*.a
+*.so
+*.exe
+
+# 忽略编译目录
+build/
+bin/
+
+# 忽略调试文件
+*.log
+*.tmp
+*.swp
+
+# 忽略版本控制的编辑器相关文件
+.vscode/
+.idea/
+*.sublime-workspace
+
+
