@@ -3,15 +3,17 @@
 
 ## Simple DataStructures of Hello Algorithm
 
-[x] Array
-[x] Linked_list
-[x] List
-[x] Queue
-[x] Deque
-[x] Stack
-[x] Hash
-[x] Tree
-[ ] Heap
-[ ] Graph
+- [x] Array
+- [x] Linked_list
+- [x] List
+- [x] Queue
+- [x] Deque
+- [x] Stack
+- [x] Hash
+- [x] Tree
+- [ ] Heap
+- [ ] Graph
+
+
 
 ## STL
