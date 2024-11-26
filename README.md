@@ -11,7 +11,7 @@
 - [x] Stack
 - [x] Hash
 - [x] Tree
-- [ ] Heap
+- [x] Heap
 - [ ] Graph
 
 

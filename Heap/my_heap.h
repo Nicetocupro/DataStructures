@@ -2,6 +2,7 @@
 #include<stdlib.h>
 #include<cassert>
 #include<climits>
+#include<string.h>
 
 typedef struct{
 	int *data;		// 数组实现完全二叉树
@@ -12,6 +13,8 @@ typedef struct{
 } Heap;
 
 void extend(Heap *heap);
+int parent(int i);
+void siftDown(Heap *heap, int i);
 
 /* 构造函数 */
 Heap *newHeap(bool type)
@@ -36,6 +39,40 @@ Heap *newHeap(bool type)
 		exit(1);
 	}
 	
+	return heap;
+}
+
+/* 构造函数，根据切片建堆 时间复杂度 = O(n) 线性入堆速度非常的高效*/
+Heap *newHeap_List(int nums[], int size, bool type)
+{
+	// 所有元素入堆
+	Heap *heap = (Heap *)malloc(sizeof(Heap));
+	
+	if(heap == NULL)
+	{
+		printf("Heap init false\n");
+		exit(1);
+	}
+
+	heap->size = size;
+	heap->capacity = size + 4;
+	heap->extendRatio = 2;
+	heap->type = type;
+	heap->data = (int *)malloc(sizeof(int) * heap->capacity);
+
+	if(heap->data == NULL)
+	{
+		printf("Heap data init false\n");
+		exit(1);
+	}
+
+	memcpy(heap->data, nums, size * sizeof(int));
+
+	for(int i = parent(size - 1); i >= 0; i--)
+	{
+		siftDown(heap, i);
+	}
+
 	return heap;
 }
 
@@ -67,7 +104,7 @@ bool isEmpty(Heap *heap)
 /* 获取类型 */
 const char* type(Heap *heap)
 {
-	return type ? "大顶堆" : "小顶堆";
+	return heap->type ? "大顶堆" : "小顶堆";
 }
 
 /* 获取左子节点的索引 */
@@ -252,6 +289,7 @@ void extend(Heap *heap)
 	}
 }
 
+/* 转变大小堆的类型 */
 Heap *ChangeType(Heap *heap)
 {
 	heap->type = !heap->type;
@@ -273,3 +311,59 @@ Heap *ChangeType(Heap *heap)
 	return heap;
 }
 
+/* 将堆中所有元素存入数组中，从顶向下 */
+int *getHeap(Heap *heap)
+{
+	// 将堆中所有元素存入 res 数组 
+	int *res = (int *)malloc(heap->size * sizeof(int));
+
+	for(int i = 0; i < heap->size; i++)
+	{
+		res[i] = heap->data[i];
+	}
+
+	return res;
+}
+
+/* 基于堆查找数组中最大/最小的 k 个元素, type = 1 是查找最小的 type = 0 是查找最大的 */
+int *topKHeap(int *nums, int sizeNums, int k, int type)
+{
+	// 初始化堆	
+	int *empty = (int *)malloc(0);
+	Heap *heap = newHeap_List(empty, 0, type);
+
+	// 将前 k 个元素入堆
+	for(int i = 0; i < k; i++)
+	{
+		push(heap, nums[i]);
+	}
+
+	// 从第 k + 1 个元素开始，保持堆的长度为k
+	for(int i = k; i < sizeNums; i++)
+	{
+		// type = 1 是大顶堆，大的在上面，所以查找最小的 k 个
+		if(type)
+		{
+			if(nums[i] < peak(heap))
+			{
+				pop(heap);
+				push(heap, nums[i]);
+			}
+		}
+		else 
+		{
+			// type = 0 是小顶堆，小的在上面，查找最大的 k 个 
+			if(nums[i] > peak(heap))
+			{
+				pop(heap);
+				push(heap, nums[i]);
+			}
+		}
+	}
+
+	int *res = getHeap(heap);
+	// 释放内存
+	delHeap(heap);
+
+	return res;
+}
