@@ -1,7 +1,15 @@
 #include<stdio.h>
 #include<stdlib.h>
-#include<cassert>
+#include<assert.h>
 #define MAX_SIZE 10
+
+/* 节点队列结构体 */
+typedef struct {
+	int val[MAX_SIZE];
+	int front;
+	int rear;
+	int size;
+} Queue;
 
 /* 节点结构体 */
 typedef struct AdjListNode {
@@ -14,6 +22,39 @@ typedef struct {
 	AdjListNode *heads[MAX_SIZE];
 	int size;
 } GraphAdjList;
+
+/* 构造函数 */
+Queue *newQueue()
+{
+	Queue *q = (Queue *)malloc(sizeof(Queue));
+	q->front = 0;
+	q->rear = 0;
+	q->size = 0;
+	return q;
+}
+
+/* 判断队列是否为空 */
+int isEmpty(Queue *q)
+{
+	return q->size == 0;
+}
+
+/* 入队操作 */
+void enqueue(Queue *q, int val)
+{
+	q->val[q->rear] = val;
+	q->rear = (q->rear + 1) % MAX_SIZE;
+	q->size++;
+}
+
+/* 出队操作 */
+int dequeue(Queue *q)
+{
+	int val = q->val[q->front];
+	q->front = (q->front + 1) % MAX_SIZE;
+	q->size--;
+	return val;
+}
 
 /* 查找顶点对应的节点 */
 AdjListNode *findNode(GraphAdjList *graph, int val)
@@ -184,4 +225,73 @@ void removeVertex(GraphAdjList *graph, int val)
 		cur = cur->next;
 		free(pre);
 	}
+}
+
+/* 检查顶点是否被访问过 */
+int isVisited(int *visited, int size, int val)
+{
+	// 遍历查找节点
+	for(int i = 0; i < size; i++)
+	{
+		if(visited[i] == val)
+		{
+			return 1;
+		}
+	}
+	return 0;
+}
+
+/* 广度优先遍历 */
+// 使用邻接表来表示图，以便获取指定顶点的所有邻接顶点
+void graphBFS(GraphAdjList *graph, int startVal, int *res, int *resSize, int *visited, int *visitedSize)
+{
+	// 队列实现 BFS
+	Queue *queue = newQueue();
+	enqueue(queue, startVal);
+	visited[(*visitedSize)++] = startVal;
+	
+	// 以顶点 val 为起点，循环直至访问完所有节点
+	while(!isEmpty(queue))
+	{
+		int val = dequeue(queue);
+		res[(*resSize)++] = val;
+
+		// 遍历该顶点所有邻接顶点
+		AdjListNode *node = findNode(graph, val);
+		while(node != NULL)
+		{
+			// 跳过被访问的顶点
+			if(isVisited(visited, *visitedSize, val))
+			{
+				enqueue(queue, node->val);
+				visited[(*visitedSize)++] = node->val;
+			}
+		}
+	}
+	free(queue);
+}
+
+/* dfs辅助函数 */
+void dfs(GraphAdjList *graph, int *res, int *resSize, int val)
+{
+	// 记录访问顶点
+	res[(*resSize)++] = val;
+
+	// 遍历该顶点的所有邻接顶点
+	AdjListNode *node = findNode(graph, val);
+	while(node != NULL)
+	{
+		// 跳过已被访问的顶点
+		if(!isVisited(res, *resSize, node->val))
+		{
+			dfs(graph, res, resSize, node->val);
+		}
+		node = node->next;
+	}
+}
+
+/* 深度优先遍历 */
+void graphDFS(GraphAdjList *graph, int startVal, int *res, int *resSize)
+{
+	dfs(graph, res, resSize, startVal);
 }
