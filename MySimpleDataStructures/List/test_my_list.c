@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <assert.h>
-#include "my_list.c"  // 假设 your implementation is in my_list.c
+#include "my_list.h"  // 假设 your implementation is in my_list.c
 
 void testNewMyList() {
     MyList *list = newMyList();
