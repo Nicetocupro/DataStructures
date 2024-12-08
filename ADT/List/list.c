@@ -9,6 +9,20 @@ typedef struct Node
 /* 清除整个表的内容 */
 List MakeEmpty(List L)
 {
+	if(L == NULL)
+	{
+		L = (Node *)malloc(sizeof(Node));
+		if(L == NULL)
+		{
+			fprintf(stderr, "Out of space!!!\n");
+			exit(1);
+		}
+
+		L->Element = NULL;
+		L->Next = NULL;
+		return L;
+	}
+
 	Position P = L->Next, tmp = NULL;
 	while(P != NULL)
 	{
@@ -23,18 +37,34 @@ List MakeEmpty(List L)
 /* Retrun true if L is empty */
 int IsEmpty(List L)
 {
+	if(L == NULL)
+	{
+		printf("List is NULL");
+		exit(1);
+	}
+
 	return L->Next == NULL;
 }
 
 /* 测试当前位置是否是最后一个元素 */
 int IsLast(Position P, List L)
 {
+	if(L == NULL)
+	{
+		printf("List is NULL");
+		exit(1);
+	}
 	return P->Next == NULL;
 }
 
 /* 返回 X 在 L 中的Node单元 */
 Position Find(ElementType X, List L)
 {
+	if(L == NULL)
+	{
+		printf("List is NULL");
+		exit(1);
+	}
 	Position P;
 	P = L->Next;
 	while(P != NULL && P->Element != X)
@@ -48,6 +78,12 @@ Position Find(ElementType X, List L)
 /* 删除元素 */
 void Delete(ElementType X, List L)
 {
+	if(L == NULL)
+	{
+		printf("List is NULL");
+		exit(1);
+	}
+
 	Position P, TmpCell;
 
 	P = FindPrevious(X, L);
@@ -63,6 +99,12 @@ void Delete(ElementType X, List L)
 /* 寻找元素X的前驱节点 */
 Position FindPrevious(ElementType X, List L)
 {
+	if(L == NULL)
+	{
+		printf("List is NULL");
+		exit(1);
+	}
+
 	Position P;
 
 	P = L;
@@ -75,15 +117,20 @@ Position FindPrevious(ElementType X, List L)
 }
 
 /* 插入元素 */
-void insert(ElementType X, List L, Position P)
+void Insert(ElementType X, List L, Position P)
 {
+	if(L == NULL)
+	{
+		printf("List is NULL");
+		exit(1);
+	}
+
 	Position TmpCell;
 
 	TmpCell = (Node *)malloc(sizeof(Node));
-
 	if(TmpCell == NULL)
 	{
-		printf("Out of space!!!\n");
+		fprintf(stderr, "Out of space!!!\n");
 		exit(1);
 	}
 
@@ -95,6 +142,12 @@ void insert(ElementType X, List L, Position P)
 /* 删除整个表 */
 void DeleteList(List L)
 {
+	if(L == NULL)
+	{
+		printf("List is NULL");
+		return;
+	}
+
 	Position P = L, tmp = NULL;
 
 	while(P != NULL)
@@ -108,12 +161,24 @@ void DeleteList(List L)
 /* 返回头节点 */
 Position Header(List L)
 {
+	if(L == NULL)
+	{
+		printf("List is NULL");
+		exit(1);
+	}
+
 	return L;
 }
 
 /* 返回第一个节点 */
 Position First(List L)
 {
+	if(L == NULL)
+	{
+		printf("List is NULL");
+		exit(1);
+	}
+
 	return L->Next;
 }
 

@@ -8,7 +8,7 @@
 	这是为了避免C或C++中防止头文件重复包含的预处理指令，称为头文件保护
  */
 
-typedef int ElementType;
+typedef void *ElementType;
 struct Node;
 typedef struct Node *PtrToNode;
 typedef PtrToNode List;
