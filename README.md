@@ -4,7 +4,7 @@
 
 ## Simple DataStructures of Hello Algorithm
 
-这部分是根据Hello算法[https://www.hello-algo.com]中数据结构部分简单实现的一些数据结构，主要是快速熟悉数据结构的使用方法和使用技巧等。
+这部分是根据Hello算法[https://www.hello-algo.com] 中数据结构部分简单实现的一些数据结构，主要是快速熟悉数据结构的使用方法和使用技巧等。
 
 - [x] Array
 - [x] Linked_list
